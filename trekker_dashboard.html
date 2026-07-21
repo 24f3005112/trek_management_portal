@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="p-3 bg-white border rounded shadow-sm mb-4">
+    <h4>User Profile </h4>
+    <p class="mb-0 text-muted">Welcome , Trekker <strong class="text-primary"> </strong></p>
+</div>
+
+
+<form method="GET" action="{{ url_for('trekker_dashboard') }}" class="mb-4 card p-3 shadow-sm row g-3 align-items-end flex-row">
+    <div class="col-md-5 m-0 px-2">
+        <label class="form-label fw-bold small text-muted">Filter by Difficulty:</label>
+        <select name="difficulty" class="form-select form-select-sm">
+            <option value="">-- All Difficulties --</option>
+            <option value="Easy" {% if request.args.get('difficulty') == 'Easy' %}selected{% endif %}>Easy</option>
+            <option value="Moderate" {% if request.args.get('difficulty') == 'Moderate' %}selected{% endif %}>Moderate</option>
+            <option value="Hard" {% if request.args.get('difficulty') == 'Hard' %}selected{% endif %}>Hard</option>
+        </select>
+    </div>
+    <div class="col-md-5 m-0 px-2">
+        <label class="form-label fw-bold small text-muted">Filter by Location/Keyword:</label>
+        <input type="text" name="location" class="form-control form-select-sm form-control-sm" value="{{ request.args.get('location', '') }}" placeholder="Search by location string...">
+    </div>
+    <div class="col-md-2 m-0 px-2">
+        <button type="submit" class="btn btn-sm btn-secondary w-100 py-1">Filter</button>
+    </div>
+</form>
+
+<div class="row">
+
+    <div class="col-md-8">
+        <h4>Available Open Expeditions</h4>
+
+        {% for trek in available_treks %}
+        <div class="card mb-3 p-3 shadow-sm border-start border-4 border-primary">
+            <div class="d-flex justify-content-between">
+                <h5>{{ trek.trek_name }}</h5>
+                <span class="badge bg-warning text-dark align-self-start">{{ trek.trek_difficulty }}</span>
+            </div>
+
+            <p class="mb-2">
+                <strong>Location:</strong> {{ trek.trek_location }} <br>
+                <strong>Duration:</strong> {{ trek.duration }} <br>
+                <strong>Max Altitude:</strong> {{ trek.max_altitude }} <br>
+                <strong>Price Rate:</strong> <span class="text-success fw-bold">{{ trek.price }}</span> <br>
+                <strong>Available Slots:</strong> {{ trek.available_slots }}
+            </p>
+
+            {% if trek.trek_status == 'Open' and trek.available_slots > 0 %}
+                <a href="{{ url_for('book_trek', id=trek.id) }}" class="btn btn-primary btn-sm align-self-start px-4" onclick="return confirm('Confirm transaction reservation for this trek?')">
+                    Book Trek
+                </a>
+            {% else %}
+                <button class="btn btn-secondary btn-sm align-self-start" disabled>
+                    Registration Locked / Closed
+                </button>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="card p-3 text-center text-muted">No open and approved matching trekking routes on system catalog .</div>
+        {% endfor %}
+    </div>
+
+
+    <div class="col-md-4">
+        <h4>My Booking Logs</h4>
+
+        {% for app in personal_bookings %}
+            <div class="bg-white border rounded p-3 mb-2 shadow-sm border-start border-3 border-info">
+                Trek Target Route: <strong>{{ app.trek.trek_name }}</strong> <br>
+                Departure Start: <small class="text-secondary">{{ app.trek.start_date.strftime('%Y-%m-%d') }}</small> <br>
+                Status Code Flag: <strong class="text-uppercase">{{ app.status }}</strong>
+            </div>
+        {% else %}
+            <p class="text-muted small">No reservations configured on logging database .</p>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="mt-4 mb-4">
+    <a href="{{ url_for('edit_profile') }}" class="btn btn-outline-primary btn-sm">
+        Edit My Profile
+    </a>
+</div>
+{% endblock %}

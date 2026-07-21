@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Login - Placement Portal{% endblock %}
+
+{% block content %}
+<style>
+    .login-box {
+        max-width: 400px;
+        margin: 60px auto;
+        padding: 30px;
+        background: #ffffff;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+    }
+    .form-label-custom { font-weight: 600; color: #444; }
+    .btn-login { background-color: #0d6efd; color: white; padding: 10px; border-radius: 5px; border: none; width: 100%; }
+</style>
+
+<div class="login-box">
+    <h3 class="text-center mb-4">Login to Portal</h3>
+
+    <form method="POST" action="{{ url_for('login') }}">
+        <div class="mb-3">
+            <label class="form-label-custom">User Email</label>
+            <input type="email" name="email" class="form-control" placeholder="Enter your mail" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label-custom">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Enter your pass" required>
+        </div>
+
+        <button type="submit" class="btn-login">Sign In</button>
+    </form>
+
+    <div class="mt-3 text-center">
+        <span class="small text-muted">New user?</span>
+        <a href="{{ url_for('register') }}" class="text-decoration-none">Create Account</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Staff Route Assignment Portal</h3>
+
+<h4>Your Assigned Trek Log</h4>
+
+<table class="table table-bordered bg-white mt-3">
+    <thead class="table-dark">
+        <tr>
+            <th>Trek Unique ID</th>
+            <th>Title Route Name</th>
+            <th>Target Location</th>
+            <th>Slots Remaining Capacity</th>
+            <th>Operational Status</th>
+            <th>Departure Calendar Line</th>
+            <th>Action Hook Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in assigned_trek %}
+        <tr>
+            <td>#{{ t.id }}</td>
+            <td><strong>{{ t.trek_name }}</strong></td>
+            <td>{{ t.trek_location }}</td>
+            <td>{{ t.available_slots }} open spaces left</td>
+            <td><span class="badge bg-primary">{{ t.trek_status }}</span></td>
+            <td>{{ t.start_date.strftime('%Y-%m-%d') }}</td>
+            <td>
+                <a href="{{ url_for('staff_manage_trek', id=t.id) }}" class="btn btn-sm btn-dark">Manage Route Logistics</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="7" class="text-center text-muted py-3">No matching trekking routes assigned to you by admin yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

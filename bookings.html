@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}System Bookings Ledger{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>System Reservation Logs & History Ledger</h3>
+    <a href="{{ url_for('index') }}" class="btn btn-sm btn-outline-secondary">&larr; Back to Dashboard Portal</a>
+</div>
+
+<!-- Reservation Grid Ledger Component Table -->
+<div class="card p-3 shadow-sm bg-white mb-4">
+    <table class="table table-striped table-bordered align-middle m-0">
+        <thead class="table-dark">
+            <tr>
+                <th>Booking Code ID</th>
+                <th>Trek Target Route</th>
+                <th>Scheduled Departure Date</th>
+                <th>Transaction Registered</th>
+                <th>Booking Process Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for b in bookings %}
+            <tr>
+                <td>#{{ b.id }}</td>
+                <td><strong>{{ b.trek.trek_name }}</strong><br><small class="text-muted">📍 {{ b.trek.trek_location }}</small></td>
+                <td>{{ b.trek.start_date.strftime('%Y-%m-%d') }}</td>
+                <td>{{ b.booking_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>
+                    <span class="badge {% if b.status == 'Completed' %}bg-success{% elif b.status == 'Cancelled' %}bg-danger{% else %}bg-info text-dark{% endif %} text-uppercase">
+                        {{ b.status }}
+                    </span>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center text-muted py-4">No structural booking records populated inside this reservation table index yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

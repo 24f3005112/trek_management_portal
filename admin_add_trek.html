@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Post New Trek Route</h3>
+
+<form method="POST" action="{{ url_for('admin_add_trek') }}">
+    <div class="mb-2">
+        <label class="form-label fw-bold">Trek Route Name</label>
+        <input type="text" name="trek_name" class="form-control" required>
+    </div>
+
+    <div class="mb-2">
+        <label class="form-label fw-bold">Trek Location</label>
+        <input type="text" name="trek_location" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Route Difficulty Level</label>
+        <select name="trek_difficulty" class="form-select" required>
+            <option value="Easy">Easy</option>
+            <option value="Moderate">Moderate</option>
+            <option value="Hard">Hard</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Duration Span (e.g. 5 Days)</label>
+        <input type="text" class="form-control" name="duration" placeholder="e.g. 5 Days" required>
+    </div>
+
+    <div class="mb-2">
+        <label class="form-label fw-bold">Maximum Allocation Capacity Slots</label>
+        <input type="number" name="available_slots" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Assign Field Guide Staff</label>
+        <select name="assigned_staff_id" class="form-select" required>
+            {% for s in staff_list %}
+                <option value="{{ s.id }}">{{ s.Staff_Name }} (ID: {{ s.id }})</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Operational Status State</label>
+    <select name="status" class="form-select" required>
+    <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Open">Open</option>
+            <option value="Closed">Closed</option>
+        </select>
+    </div>
+
+    <div class="mb-2">
+        <label class="form-label fw-bold">Price Rate Mapping String</label>
+        <input type="text" name="price" placeholder="e.g. ₹5000" class="form-control" required>
+    </div>
+
+    <div class="mb-2">
+        <label class="form-label fw-bold">Maximum Altitude Profile</label>
+        <input type="text" name="max_altitude" placeholder="e.g. 3500m" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Route Specifications & Details (Description)</label>
+        <textarea class="form-control" name="description" rows="4" placeholder="Give the trek performance role overview or description details." required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Start Calendar Date</label>
+        <input type="date" name="start_date" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">End Calendar Date</label>
+        <input type="date" name="end_date" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-success px-4">Post Route Itinerary</button>
+</form>
+
+{% endblock %}

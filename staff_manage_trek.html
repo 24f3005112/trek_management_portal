@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Logistics Panel Node: {{ trek.trek_name }}</h4>
+    <a href="{{ url_for('staff_dashboard') }}" class="btn btn-sm btn-outline-secondary">Return to Dashboard</a>
+</div>
+
+<p class="text-muted small">Registered Participant Headcount Base: <strong>{{ user_count }}</strong> active users checked.</p>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card p-3 shadow-sm h-100">
+            <h5>Modify Trek Slots & Layout</h5>
+            <form method="POST" action="{{ url_for('staff_manage_trek', id=trek.id) }}">
+                <input type="hidden" name="action_type" value="update_parameters">
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Available Slots</label>
+                    <input type="number" name="available_slots" value="{{ trek.available_slots }}" min="0" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Live Status </label>
+                    <select name="status" class="form-select">
+                        <option value="Open" {% if trek.trek_status == 'Open' %}selected{% endif %}>Open</option>
+                        <option value="Closed" {% if trek.trek_status == 'Closed' %}selected{% endif %}>Closed</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Push live Values</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card p-3 shadow-sm h-100 d-flex flex-column justify-content-center">
+            <h5>Milestone Tracking Actions</h5>
+            <form method="POST" class="mb-2" action="{{ url_for('staff_manage_trek', id=trek.id) }}">
+                <input type="hidden" name="action_type" value="mark_started">
+                <button type="submit" class="btn btn-warning w-100 fw-bold" {% if trek.trek_status == 'Open' %}disabled{% endif %}>
+                    Mark Trek as Started (Sets Status to Open Phase Mapping)
+                </button>
+            </form>
+
+            <form method="POST" action="{{ url_for('staff_manage_trek', id=trek.id) }}">
+                <input type="hidden" name="action_type" value="mark_completed">
+                <button type="submit" class="btn btn-success w-100 fw-bold" {% if trek.trek_status == 'Completed' %}disabled{% endif %}>
+                    Mark Trek as Completed
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="card p-3 shadow-sm bg-white">
+    <h5>Registered Expedition Participants</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User Account Key</th>
+                <th>Trekker Name</th>
+                <th>Contact Details</th>
+                <th>Transaction Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in participants %}
+            <tr>
+                <td>{{ p.user.id }}</td>
+                <td><strong>{{ p.user.name }}</strong></td>
+                <td>{{ p.user.contact_details }}</td>
+                <td><span class="badge bg-secondary">{{ p.status }}</span></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-center text-muted">No trekkers populate this trek.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

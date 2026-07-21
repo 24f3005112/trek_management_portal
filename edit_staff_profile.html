@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Modify Staff Profile Attributes{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="mb-3">
+            <a href="{{ url_for('staff_dashboard') }}" class="text-decoration-none small text-muted">
+                &larr; Discard and Return to Assignment Dashboard
+            </a>
+        </div>
+
+        <div class="card p-4 shadow-sm bg-white border">
+            <h4>Update Staff Profile Credentials</h4>
+            <p class="text-muted small">Keep your dynamic profile specifications up to date for administration and trekker verification checks.</p>
+
+            <form action="{{ url_for('edit_profile') }}" method="POST">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Full Professional Name</label>
+                    <input type="text" name="name" class="form-control" value="{{ user_obj.Staff_Name }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Contact Details (Phone / Social Handle)</label>
+                    <input type="text" name="contact_details" class="form-control" value="{{ user_obj.contact_details }}" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Years of Guiding Experience</label>
+                    <input type="text" name="staff_experience" class="form-control" value="{{ user_obj.staff_experience }}" required>
+                </div>
+
+                <div class="p-3 bg-light rounded border mb-4">
+                    <small class="text-muted d-block"><strong>Numeric Badge ID:</strong> {{ user_obj.staff_id }}</small>
+                    <small class="text-muted d-block"><strong>Current Evaluation Rating:</strong> ⭐ {{ user_obj.staff_rating if user_obj.staff_rating else 'N/A' }}</small>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Save Profile Parameters</button>
+                    <a href="{{ url_for('staff_dashboard') }}" class="btn btn-light border">Cancel Changes</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

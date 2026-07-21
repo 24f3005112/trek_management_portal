@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Edit Trek Destination Route{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-sm btn-outline-secondary">Back</a>
+            <div>
+                <h4 style="margin-bottom:0;">Edit Placement Style Trek Route Document</h4>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body p-4">
+                <form action="{{ url_for('admin_edit_trek', id=trek.id) }}" method="POST">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Trek Name</label>
+                        <input type="text" name="name" class="form-control" value="{{ trek.trek_name }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Location</label>
+                        <input type="text" name="location" class="form-control" value="{{ trek.trek_location }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Difficulty Profile</label>
+                        <select name="difficulty" class="form-select">
+                            <option value="Easy" {% if trek.trek_difficulty == 'Easy' %}selected{% endif %}>Easy</option>
+                            <option value="Moderate" {% if trek.trek_difficulty == 'Moderate' %}selected{% endif %}>Moderate</option>
+                            <option value="Hard" {% if trek.trek_difficulty == 'Hard' %}selected{% endif %}>Hard</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Duration</label>
+                        <input type="text" class="form-control" name="duration" value="{{ trek.duration }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Available Allocation Capacity Slots</label>
+                        <input type="number" class="form-control" name="available_slots" value="{{ trek.available_slots }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Assigned Staff ID Selection</label>
+                        <select name="assigned_staff_id" class="form-select">
+                            {% for s in staff_list %}
+                                <option value="{{ s.id }}" {% if trek.assigned_staff_id == s.id %}selected{% endif %}>{{ s.Staff_Name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Accessibility Status Phase</label>
+                        <select name="status" class="form-select">
+                            <option value="Pending" {% if trek.trek_status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="Approved" {% if trek.trek_status == 'Approved' %}selected{% endif %}>Approved</option>
+                            <option value="Open" {% if trek.trek_status == 'Open' %}selected{% endif %}>Open</option>
+                            <option value="Closed" {% if trek.trek_status == 'Closed' %}selected{% endif %}>Closed</option>
+                            <option value="Completed" {% if trek.trek_status == 'Completed' %}selected{% endif %}>Completed</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Application / Operational Start Date</label>
+                        <input type="date" name="start_date" class="form-control" value="{{ trek.start_date.strftime('%Y-%m-%d') }}">
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-bold">Operational Sequence End Date</label>
+                        <input type="date" name="end_date" class="form-control" value="{{ trek.end_date.strftime('%Y-%m-%d') }}">
+                    </div>
+
+                    <div class="d-flex gap-2 border-top pt-3">
+                        <button type="submit" class="btn btn-primary px-5">Save Document Changes</button>
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary px-4">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
